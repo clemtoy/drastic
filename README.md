@@ -4,11 +4,11 @@ Reduce the size of your Python3 code and increase its robustness.
 ## Introduction
 Drastic uses annotations for type checking and object auto-initialization. It provides the following decorators.
 
-**@strict** allows to:
+**@strict**
 - control arguments of a function or method
 - control returned value
 
-**@init** allows to:
+**@init**
 - control arguments of a constructor
 - add some special methods to the class
 - auto-initialize the object with the given values
@@ -83,6 +83,8 @@ class User:
 It doesn't match the level of laziness of any Python developer. Using Drastic shorten drastically your code:
 
 ```Python
+from drastic import init
+
 class User:
     """ Represents an user. """
 
@@ -93,7 +95,7 @@ class User:
 
 No, I don't forgot anything. The `@init` decorator auto-initializes the object!
 
-`@init` also performs type checking on arguments as `@strict`:
+`@init` also performs type checking on arguments as `@strict` does:
 
 ```Python
 class User:
