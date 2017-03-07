@@ -25,7 +25,7 @@ def hello(name: str):
     print("Hello " + name)
 ```
 
-The annotation `str` specifies that `value` should be a string. If it is not, an ArgumentTypeError is raised. It also works with parameters:
+The annotation `str` specifies that `name` should be a string. If it is not, an `ArgumentTypeError` is raised. It also works with parameters:
 
 ```Python
 @strict
@@ -41,6 +41,7 @@ def value_of(obj: MyObject) -> int:
     return obj.value
 ```
 
+It will raise a `ReturnTypeError` if the returned value is not a `int`.
 To allow multiple types, just use a tuple like this:
 
 ```Python
