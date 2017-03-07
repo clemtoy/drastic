@@ -1,6 +1,33 @@
 import inspect
 from collections import defaultdict
 
+
+#######################
+# Constants
+#######################
+
+nonable = 'nonable'
+
+
+#######################
+# Disable/Enable
+#######################
+
+_enabled = True
+
+def disable():
+    """ Disable all drastic behaviours. """
+
+    global _enabled
+    _enabled = False
+
+def enable():
+    """ Enable all drastic behaviours. """
+
+    global _enabled
+    _enabled = True
+    
+
 #######################
 # Exceptions
 #######################
@@ -10,7 +37,7 @@ class ReturnTypeError(TypeError):
 
     def __init__(self,
         func_name: "name of the function",
-        expected: "expected types or 'nullable' keyword",
+        expected: "expected types or 'nonable' keyword",
         returned: "returned value"):
         """ Initialize the exception. """
         
@@ -27,7 +54,7 @@ class ArgumentTypeError(TypeError):
     def __init__(self,
         func_name: "name of the function",
         arg_name: "name of the argument",
-        expected: "expected types or 'nullable' keyword",
+        expected: "expected types or 'nonable' keyword",
         received: "value of the argument"):
         """ Initialize the exception. """
 
@@ -48,11 +75,11 @@ class AnnotationError(Exception):
 
 def _type_ok(
     value: "value to check",
-    expected: "expected types or 'nullable' keyword"):
+    expected: "expected types or 'nonable' keyword"):
     """ Returns True if type of value is one of expected. """
 
     types = tuple(t for t in expected if isinstance(t, type))
-    nullable = 'nullable' in expected
+    nullable = 'nonable' in expected
     return isinstance(value, types) or (nullable and value is None)
 
 
@@ -76,6 +103,9 @@ def strict(
         **kwargs: "dict of arguments"):
         """ Function checking arguments and return types. """
 
+        if not _enabled:
+            return func(*args, **kwargs)
+            
         funcname = func.__name__
         spec = inspect.getfullargspec(func)
 
@@ -154,7 +184,7 @@ class Object:
     """ Wraps the object to initialize. """
 
     # All existing keywords
-    all_keywords = ('nullable', 'local', 'private', 'boolean', 'number', 'string', 'container', 'compare')
+    all_keywords = ('nonable', 'local', 'private', 'boolean', 'number', 'string', 'container', 'compare')
     
     # Keywords incompatible with the 'local' keyword
     local_incompatible = ('private', 'boolean', 'number', 'string', 'container', 'compare')
@@ -306,7 +336,7 @@ class Argument():
         """ Compare the type of the argument with the expected. """
 
         if self.types:
-            nullable = self.value is None and 'nullable' in self.keywords
+            nullable = self.value is None and 'nonable' in self.keywords
             if not (nullable or isinstance(self.value, self.types)):
                 raise ArgumentTypeError('__init__', self.name, self.types, type(self.value))
 
@@ -319,18 +349,20 @@ def init(
         *args: "arguments to convert to fields",
         **kwargs: "dict of arguments"):
         """ Initializes the object. """
-        
-        spec = inspect.getfullargspec(constructor)
-        arguments = list(args)
-        if len(arguments) < len(spec.args):
-            arguments += spec.defaults[len(arguments) - len(spec.args):]
 
-        annotations = defaultdict(lambda: None, spec.annotations)
+        if _enabled:
         
-        obj = Object(arguments[0])
-        for name, value in zip(spec.args[1:], arguments[1:]):
-            obj.add_argument(Argument(name, value, annotations[name]))
-        obj.finalize()
+            spec = inspect.getfullargspec(constructor)
+            arguments = list(args)
+            if len(arguments) < len(spec.args):
+                arguments += spec.defaults[len(arguments) - len(spec.args):]
+
+            annotations = defaultdict(lambda: None, spec.annotations)
+            
+            obj = Object(arguments[0])
+            for name, value in zip(spec.args[1:], arguments[1:]):
+                obj.add_argument(Argument(name, value, annotations[name]))
+            obj.finalize()
 
         return constructor(*args, **kwargs)
     return __init
