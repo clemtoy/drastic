@@ -1,3 +1,1 @@
-from drastic import nonable
-from drastic import disable, enable
-from drastic import strict, init
+from .drastic import nonable, init, strict, enable, disable
