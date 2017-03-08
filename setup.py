@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'drastic',
   packages = ['drastic'],
-  version = '1.0',
+  version = '1.1',
   description = 'Reduce the size of your Python code and increase its robustness.',
   author = 'Clement Michard',
   author_email = 'clement.michard@gmail.com',
