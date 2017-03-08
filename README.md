@@ -138,3 +138,8 @@ These are the available keywords:
 - `string`: use these properties in the string representation of the object (`str(user)` would return `"<User: firsname=John, lastname=Doe>"`)
 - `container`: use this property to emulate a container
 - `compare`: use this property when comparing two objects
+
+## Enable/Disable
+
+By default, drastic is enabled.
+You can disable/enable using `drastic.disable()` and `drastic.enable()`.
