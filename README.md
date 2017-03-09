@@ -13,6 +13,21 @@ Drastic uses annotations for type checking and object auto-initialization. It pr
 - add some special methods to the class
 - auto-initialize the object with the given values
 
+## Installation
+
+***This package works only with Python3*** since annotations are Python3 features.
+
+Drastic is on the [PyPI](https://pypi.python.org/pypi/drastic). Thus, you can install it using `pip` or `easy_install`:
+
+```
+pip install drastic
+```
+or
+
+```
+easy_install drastic
+```
+
 ## @strict decorator
 
 Let's begin with a simple example:
