@@ -17,7 +17,7 @@ Drastic uses annotations for type checking and object auto-initialization. It pr
 
 ***This package works only with Python3*** since annotations are Python3 features.
 
-Drastic is on the [PyPI](https://pypi.python.org/pypi/drastic). Thus, you can install it using `pip` or `easy_install`:
+Drastic is on the [PyPI](https://pypi.python.org/pypi/drastic) repository. Thus, you can install it using `pip` or `easy_install`:
 
 ```
 pip install drastic
